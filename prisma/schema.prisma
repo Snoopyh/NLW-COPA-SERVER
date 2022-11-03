@@ -15,21 +15,19 @@ datasource db {
 }
 
 model Pool {
-  id        String   @id @default(cuid())
-  title     String
-  code      String   @unique
-  createAdt DateTime @default(now())
-  ownerId   String?
-
+  id           String        @id @default(cuid())
+  title        String
+  code         String        @unique
+  createdAt    DateTime      @default(now())
+  ownerId      String?
   participants Participant[]
   owner        User?         @relation(fields: [ownerId], references: [id])
 }
 
 model Participant {
-  id     String @id @default(cuid())
-  userId String
-  poolId String
-
+  id      String  @id @default(cuid())
+  userId  String
+  poolId  String
   guesses Guess[]
   user    User    @relation(fields: [userId], references: [id])
   pool    Pool    @relation(fields: [poolId], references: [id])
@@ -38,14 +36,13 @@ model Participant {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  avatarUrl String?
-  CreateAdt DateTime @default(now())
-
-  participantingAt Participant[]
-  ownPools         Pool[]
+  id              String        @id @default(cuid())
+  name            String
+  email           String        @unique
+  avatarUrl       String?
+  createdAt       DateTime      @default(now())
+  participatingAt Participant[]
+  ownPools        Pool[]
 }
 
 model Game {
@@ -53,18 +50,16 @@ model Game {
   date                  DateTime
   firstTeamCountryCode  String
   secondTeamCountryCode String
-
-  guesses Guess[]
+  guesses               Guess[]
 }
 
 model Guess {
-  id               String   @id @default(cuid())
+  id               String      @id @default(cuid())
   firstTeamPoints  Int
   secondTeamPoints Int
-  CreateAdt        DateTime @default(now())
+  createdAt        DateTime    @default(now())
   gameId           String
   participantId    String
-
-  participant Participant @relation(fields: [participantId], references: [id])
-  game        Game        @relation(fields: [gameId], references: [id])
+  participant      Participant @relation(fields: [participantId], references: [id])
+  game             Game        @relation(fields: [gameId], references: [id])
 }
